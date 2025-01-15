@@ -1,1 +1,0 @@
-# sst-autocompiler
