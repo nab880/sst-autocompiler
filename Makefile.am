@@ -9,68 +9,32 @@
 #   SST/macroscale directory.
 #
 
-include $(top_srcdir)/Makefile.common
 
 bin_PROGRAMS = 
 
 dist_bin_SCRIPTS = \
-  sst++ \
-  sstcc \
   sstcclib.py \
   sstccutils.py \
   sstcompile.py \
   sstlink.py \
   configlib.py
 
-if INTEGRATED_SST_CORE
-dist_bin_SCRIPTS += pysstmac
-endif
 
 bin_SCRIPTS = sstmacro-config sstccvars.py
 
-EXTRA_DIST = sst++.in sstcc.in sstmacro-config.in sstccvars.py.in tools config_tools manifest uq plots
 
 AM_LDFLAGS += -ldl
 
-AM_CPPFLAGS += \
- -I$(top_builddir)/bin \
- -I$(top_srcdir)/bin \
- -I$(top_builddir)/dumpi \
- -I$(top_srcdir)/dumpi
 
 
-if !INTEGRATED_SST_CORE
-bin_PROGRAMS += sstmac sstmac_top_info
 
-sstmac_SOURCES = src/sstmac_dummy_main.cc
-sstmac_top_info_SOURCES = src/top_info.cc
 
-exe_LDADD =
 
-#if HAVE_OTF2
-#  exe_LDADD += ../sst-dumpi/dumpi/libotf2dump/libotf2dump.la 
-#  exe_LDADD += $(OTF2_LDFLAGS) $(OTF2_LIBS)
-#endif
 
-exe_LDADD += \
-    ../sprockit/sprockit/libsprockit.la \
-    ../sstmac/main/libsstmac_main.la \
-    ../sstmac/install/libsstmac.la \
-    ../sprockit/sprockit/libsprockit.la
 
-if HAVE_OTF2
-  exe_LDADD += ../sst-dumpi/dumpi/libotf2dump/libotf2dump.la
-endif
-
-if HAVE_OTF2
-  exe_LDADD += ../sst-dumpi/dumpi/libotf2dump/libotf2dump.la 
-#  exe_LDADD += $(OTF2_LDFLAGS) $(OTF2_LIBS)
-endif
 
 
 sstmac_LDADD = $(exe_LDADD) -ldl 
-sstmac_top_info_LDADD = $(exe_LDADD)
-endif
 
 EXTRA_DIST += clang
 
@@ -140,11 +104,6 @@ endif
 
 
 
-if HAVE_SST_ELEMENTS
-bin_PROGRAMS += ariel_test
-ariel_test_SOURCES = ariel_test.cc
-ariel_test_LDADD = -lrt
-ariel_test_CPPFLAGS = $(SST_ELEMENTS_CPPFLAGS) $(SST_CPPFLAGS)
 endif
 
 
