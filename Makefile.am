@@ -9,6 +9,7 @@
 #   SST/macroscale directory.
 #
 
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_srcdir)/sprockit -I$(top_builddir)/sprockit
 
 bin_PROGRAMS = 
 
