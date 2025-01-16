@@ -94,6 +94,8 @@ def setPythonPath():
   my_sstmac_include_dir = None
 
   my_src_folder = os.path.join(my_folder, "pysst")
+  print (my_src_folder)
+  print("src folder\n")
   if (os.path.isdir(my_src_folder)):
       my_sstmac_include_dir = os.path.join(*os.path.split(my_folder)[:-1])
       sys.path.append(my_folder)

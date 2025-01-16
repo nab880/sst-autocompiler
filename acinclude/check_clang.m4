@@ -3,7 +3,7 @@
 AC_DEFUN([CHECK_CLANG], [
 
   AC_MSG_CHECKING([Clang flags])
-  have_clang=`$pyexe $srcdir/bin/config_tools/get_clang $CXX`
+  have_clang=`$pyexe $srcdir/config_tools/get_clang $CXX`
   AC_MSG_RESULT([$have_clang])
 
 

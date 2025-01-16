@@ -63,7 +63,7 @@ AC_LANG([C++])
 
 AC_PROG_LN_S
 
-os=`$srcdir/bin/config_tools/get_os`
+os=`$srcdir/config_tools/get_os`
 
 if test "X$os" = "Xubuntu"; then
 LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
@@ -104,6 +104,7 @@ AC_OUTPUT
 echo
 echo " Configuration Summary:"
 echo "---------------------------------------------------------------"
+echo "$srcdir"
 echo "Install prefix     $prefix"
 echo "OS                 $os"
 echo "C compiler         $CC"
