@@ -1,47 +1,27 @@
+# -*- Makefile -*-
 #
-#   This file is part of SST/macroscale: 
-#                The macroscale architecture simulator from the SST suite.
-#   Copyright (c) 2009-2023, NTESS.
-#   This software is distributed under the BSD License.
-#   Under the terms of Contract DE-NA0003525 with NTESS,
-#   the U.S. Government retains certain rights in this software.
-#   For more information, see the LICENSE file in the top 
-#   SST/macroscale directory.
 #
 
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_srcdir)/sprockit -I$(top_builddir)/sprockit
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/include
 
 bin_PROGRAMS = 
 
 dist_bin_SCRIPTS = \
-  sstcclib.py \
-  sstccutils.py \
-  sstcompile.py \
-  sstlink.py \
+  hgcclib.py \
+  hgccutils.py \
+  hgcompile.py \
+  hglink.py \
   configlib.py
-
 
 bin_SCRIPTS = sstmacro-config sstccvars.py
 
+AM_LDFLAGS = -ldl
 
-AM_LDFLAGS += -ldl
-
-
-
-
-
-
-
-
-
-
-sstmac_LDADD = $(exe_LDADD) -ldl 
-
-EXTRA_DIST += clang
+EXTRA_DIST = clang
 
 if HAVE_CLANG
-bin_PROGRAMS += sstmac_clang
-sstmac_clang_SOURCES = \
+bin_PROGRAMS += ssthg_clang
+ssthg_clang_SOURCES = \
   clang/util.cc \
   clang/main.cc \
   clang/astVisitorGlobalVars.cc \
@@ -53,12 +33,11 @@ sstmac_clang_SOURCES = \
   clang/frontendActions.cc \
   clang/astVisitor.cc 
 
-
-sstmac_clang_CXXFLAGS = -fno-rtti $(AM_CXXFLAGS)
-sstmac_clang_CPPFLAGS = $(CLANG_CPPFLAGS) $(AM_CPPFLAGS)
+ssthg_clang_CXXFLAGS = -fno-rtti $(AM_CXXFLAGS)
+ssthg_clang_CPPFLAGS = $(CLANG_CPPFLAGS) $(AM_CPPFLAGS)
 
 if HAVE_CXX17
-sstmac_clang_SOURCES += \
+ssthg_clang_SOURCES += \
 	clang/annotatePragma.cc \
 	clang/memoizePragma.cc \
 	clang/memoizeVariableCaptureAnalyzer.cc \
@@ -72,7 +51,7 @@ library_includedir=$(includedir)/memoization
 library_include_HEADERS = clang/memoization/capture.h
 endif
 
-sstmac_clang_LDFLAGS = $(CLANG_LDFLAGS) \
+ssthg_clang_LDFLAGS = $(CLANG_LDFLAGS) \
  -Wl,-rpath,@CLANG_INSTALL_DIR@/lib \
  -lclangFrontend \
  -lclangFrontendTool \
@@ -97,15 +76,7 @@ sstmac_clang_LDFLAGS = $(CLANG_LDFLAGS) \
 
 # TODO Figure out this was included
 # if CLANG_NEED_LIBCPP
-# sstmac_clang_LDFLAGS += -lclang-cpp
+# ssthg_clang_LDFLAGS += -lclang-cpp
 # endif
 
 endif
-
-
-
-
-endif
-
-
-

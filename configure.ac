@@ -93,11 +93,10 @@ CHECK_CLANG_LLVM()
 dnl Don't reorder options.
 dnl AC_PRESERVE_HELP_ORDER
 
-#AC_CONFIG_FILES([bin/sstmacro-config], [chmod +x bin/sstmacro-config])
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([bin/sst++], [chmod +x bin/hg++])
-AC_CONFIG_FILES([bin/sstcc], [chmod +x bin/hgcc])
-AC_CONFIG_FILES([bin/sstccvars.py])
+AC_CONFIG_FILES([hg++], [chmod +x hg++])
+AC_CONFIG_FILES([hgcc], [chmod +x hgcc])
+AC_CONFIG_FILES([hgccvars.py])
 
 AC_OUTPUT
 
