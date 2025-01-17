@@ -52,6 +52,7 @@ endif
 
 ssthg_clang_LDFLAGS = $(CLANG_LDFLAGS) \
  -Wl,-rpath,@CLANG_INSTALL_DIR@/lib \
+ -lclang \
  -lclangFrontend \
  -lclangFrontendTool \
  -lclangTooling \
