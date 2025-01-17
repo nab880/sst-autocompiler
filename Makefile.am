@@ -4,7 +4,7 @@
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/include
 
-bin_PROGRAMS = 
+bin_PROGRAMS = ssthg_clang
 
 dist_bin_SCRIPTS = \
   hgcclib.py \
@@ -13,14 +13,13 @@ dist_bin_SCRIPTS = \
   hglink.py \
   configlib.py
 
-bin_SCRIPTS = sstmacro-config sstccvars.py
+bin_SCRIPTS = hgccvars.py
 
 AM_LDFLAGS = -ldl
 
 EXTRA_DIST = clang
 
 if HAVE_CLANG
-bin_PROGRAMS += ssthg_clang
 ssthg_clang_SOURCES = \
   clang/util.cc \
   clang/main.cc \
