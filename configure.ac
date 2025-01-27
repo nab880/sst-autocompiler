@@ -25,12 +25,12 @@ AC_CONFIG_MACRO_DIR([acinclude])
 #AX_PREFIX_CONFIG_H(sstmac/common/sstmac_config.h, SSTMAC)
 AC_CANONICAL_TARGET
 
-if test "X$prefix" == "XNONE"; then
-  MY_PREFIX=$ac_default_prefix
-else
-  MY_PREFIX=`cd $prefix ; pwd`
-fi
-MY_ABS_SRCPATH=`cd $srcdir ; pwd`
+#if test "X$prefix" == "XNONE"; then
+#  MY_PREFIX=$ac_default_prefix
+#else
+#  MY_PREFIX=`cd $prefix ; pwd`
+#fi
+#MY_ABS_SRCPATH=`cd $srcdir ; pwd`
 
 # More version info.
 AH_TEMPLATE([VERSION], [Major version number])
@@ -60,7 +60,6 @@ dnl AC_PROG_RANLIB
 AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C++])
-
 AC_PROG_LN_S
 
 os=`$srcdir/config_tools/get_os`
