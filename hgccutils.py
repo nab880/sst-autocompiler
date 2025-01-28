@@ -62,5 +62,5 @@ def getProcName():
   return cmd
 
 def cleanFlag(flag):
-  from sstccvars import includeDir, execPrefix, prefix 
+  from hgccvars import includeDir, execPrefix, prefix 
   return flag.replace("${includedir}", includeDir).replace("${exec_prefix}", execPrefix).replace("${prefix}",prefix).strip()

@@ -232,15 +232,15 @@ def run(typ, extraLibs=""):
   import sys
   import platform
   from configlib import getstatusoutput
-  from sstccvars import sstLdFlags, sstCppFlags
-  from sstccvars import prefix, execPrefix, includeDir, cc, cxx, spackcc, spackcxx
-  from sstccvars import sstCxxFlagsStr, sstCFlagsStr
-  from sstccvars import includeDir
-  from sstccvars import sstCore
-  from sstccvars import soFlagsStr
-  from sstccvars import clangBin
-  from sstccvars import clangCppFlagsStr, clangLdFlagsStr
-  from sstccutils import cleanFlag, getProcTree, swapSuffix
+  from hgccvars import sstLdFlags, sstCppFlags
+  from hgccvars import prefix, execPrefix, includeDir, cc, cxx, spackcc, spackcxx
+  from hgccvars import sstCxxFlagsStr, sstCFlagsStr
+  from hgccvars import includeDir
+  from hgccvars import sstCore
+  from hgccvars import soFlagsStr
+  from hgccvars import clangBin
+  from hgccvars import clangCppFlagsStr, clangLdFlagsStr
+  from hgccutils import cleanFlag, getProcTree, swapSuffix
 
   # Probably better to just always compile PIC
   #needfPIC = "fPIC" in sstCxxFlagsStr

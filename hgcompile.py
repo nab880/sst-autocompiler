@@ -74,8 +74,8 @@ def addEmitLlvm(ctx, sourceFile, outputFile, args, cmds):
   cmds.append([None,cmdArr,[outputFile]])
 
 def addLlvmOptPass(ctx, llFile, llvmPass, args, cmds):
-  from sstccvars import clangDir
-  from sstccvars import prefix
+  from hgccvars import clangDir
+  from hgccvars import prefix
   import os
   optTool = os.path.join(clangDir, "bin", "opt")
   llvmLib = os.path.join(prefix, "lib", "lib%s.so" % llvmPass)
@@ -115,13 +115,13 @@ def addModeDefines(ctx, args):
     ctx.defines.append("SSTMAC_NO_REPLACEMENTS")
 
 def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
-  from sstccvars import prefix
-  from sstccvars import defaultIncludePaths, includeDir
-  from sstccutils import cleanFlag, swapSuffix, addPrefixAndRebase, addPrefix
-  from sstccvars import clangCppFlagsStr, clangLdFlagsStr
-  from sstccvars import clangLibtoolingCxxFlagsStr, clangLibtoolingCFlagsStr
-  from sstccvars import haveFloat128
-  from sstccvars import sstStdFlag
+  from hgccvars import prefix
+  from hgccvars import defaultIncludePaths, includeDir
+  from hgccutils import cleanFlag, swapSuffix, addPrefixAndRebase, addPrefix
+  from hgccvars import clangCppFlagsStr, clangLdFlagsStr
+  from hgccvars import clangLibtoolingCxxFlagsStr, clangLibtoolingCFlagsStr
+  from hgccvars import haveFloat128
+  from hgccvars import sstStdFlag
   import os
 
   #First we must pre-process the file to get it read for source-to-source
