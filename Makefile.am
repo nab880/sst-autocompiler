@@ -34,8 +34,8 @@ ssthg_clang_SOURCES = \
   clang/frontendActions.cc \
   clang/astVisitor.cc 
 
-ssthg_clang_CXXFLAGS = -fPIC -shared $(AM_CXXFLAGS)
-ssthg_clang_CPPFLAGS = -fPIC -shared $(CLANG_CPPFLAGS) $(AM_CPPFLAGS)
+ssthg_clang_CXXFLAGS = -fno-rtti $(AM_CXXFLAGS)
+ssthg_clang_CPPFLAGS = $(CLANG_CPPFLAGS) $(AM_CPPFLAGS)
 
 if HAVE_CXX17
 ssthg_clang_SOURCES += \
