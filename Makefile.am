@@ -4,6 +4,8 @@
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/include
 
+ACLOCAL_AMFLAGS = -I acinclude
+
 bin_PROGRAMS = ssthg_clang
 
 dist_bin_SCRIPTS = \

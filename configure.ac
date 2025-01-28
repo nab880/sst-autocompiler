@@ -2,7 +2,7 @@
 #
 #
 
-# Version info, used both in library versioning and inside sstmacro.
+# Version info
 m4_define([HGCC_VERSION_TAG], 1)
 m4_define([HGCC_SUBVERSION_TAG], 0)
 m4_define([HGCC_SUBSUBVERSION_TAG], 0)
@@ -14,15 +14,15 @@ dnl m4_define([HGCC_SNAPSHOT_TAG],-beta1)
 # Enable this for development snapshots (should generally be enabled)
 #m4_define([HGCC_SNAPSHOT_TAG],-snapshot)
 
-# Construct the sstmacro version
+# Construct the version
 m4_define([HGCC_ACVERSION_TAG],
           [HGCC_VERSION_TAG.HGCC_SUBVERSION_TAG.HGCC_SUBSUBVERSION_TAG])
 
 dnl AC_PREREQ([2.71]) avoid this if possible
 AC_INIT([hgcc],[HGCC_ACVERSION_TAG],[sst-help@sandia.gov])
 AC_CONFIG_MACRO_DIR([acinclude])
-#AC_CONFIG_HEADERS(sstmac/common/config.h)
-#AX_PREFIX_CONFIG_H(sstmac/common/sstmac_config.h, SSTMAC)
+AC_CONFIG_HEADERS(config.h)
+AX_PREFIX_CONFIG_H(hgcc_config.h, HGCC)
 AC_CANONICAL_TARGET
 
 #if test "X$prefix" == "XNONE"; then
@@ -34,9 +34,12 @@ AC_CANONICAL_TARGET
 
 # More version info.
 AH_TEMPLATE([VERSION], [Major version number])
-AH_TEMPLATE([SUBVERSION], [Major version number])
-AH_TEMPLATE([SUBSUBVERSION], [Major version number])
+AH_TEMPLATE([SUBVERSION], [Minor version number])
+AH_TEMPLATE([SUBSUBVERSION], [Point version number])
 AC_DEFINE_UNQUOTED(VERSION, [HGCC_VERSION_TAG])
+AC_DEFINE_UNQUOTED(SUBVERSION, [HGCC_SUBVERSION_TAG])
+AC_DEFINE_UNQUOTED(SUBSUBVERSION, [HGCC_SUBSUBVERSION_TAG])
+AC_SUBST(HGCC_LIBVERSION, [HGCC_LIBVERSION_TAG])
 
 # Init automake
 AM_INIT_AUTOMAKE([tar-pax -Wall -Werror foreign -Wno-portability subdir-objects])
@@ -61,6 +64,10 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C++])
 AC_PROG_LN_S
+
+LT_INIT
+
+LT_INIT([shared disable-static])
 
 os=`$srcdir/config_tools/get_os`
 
