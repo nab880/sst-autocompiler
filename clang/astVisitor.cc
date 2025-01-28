@@ -48,7 +48,7 @@ Questions? Contact sst-macro-help@sandia.gov
 #include <sys/time.h>
 #include <iostream>
 #include <fstream>
-#include <sstmac/common/sstmac_config.h>
+#include <hgcc_config.h>
 
 clang::LangOptions Printing::langOpts;
 clang::PrintingPolicy Printing::policy(Printing::langOpts);

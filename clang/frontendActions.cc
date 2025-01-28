@@ -52,7 +52,7 @@ Questions? Contact sst-macro-help@sandia.gov
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <sstmac/common/sstmac_config.h>
+#include <hgcc_config.h>
 
 using namespace clang;
 using namespace clang::driver;
