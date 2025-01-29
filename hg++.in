@@ -43,7 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Questions? Contact sst-macro-help@sandia.gov
 """
 
-from sstcclib import run
+from hgcclib import run
 import sys
 rc =  run("c++")
 if not rc == 0:
