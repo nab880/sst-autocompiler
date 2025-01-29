@@ -11,6 +11,10 @@ Makefile.in
 
 # http://www.gnu.org/software/autoconf
 
+acinclude/libtool.m4
+acinclude/ltargz.m4
+acinclude/ltdl.m4
+acinclude/ltversion.m4
 autom4te.cache
 /autoscan.log
 /autoscan-*.log
