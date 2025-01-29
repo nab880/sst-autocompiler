@@ -43,7 +43,7 @@ Questions? Contact sst-macro-help@sandia.gov
 """
 sstLdFlags = [
 '@LDFLAGS@',
-'-L@libdir@',
+'-L@SST_MACRO@/lib',
 ]
 
 haveFloat128=@have_float_128@
@@ -51,14 +51,14 @@ clangCppFlagsStr="@CLANG_CPPFLAGS@"
 clangLdFlagsStr="@CLANG_LDFLAGS@"
 clangLibtoolingCxxFlagsStr="@CLANG_LIBTOOLING_CXX_FLAGS@ @MACSDK_CXXFLAGS@"
 clangLibtoolingCFlagsStr="@CLANG_LIBTOOLING_C_FLAGS@ @MACSDK_CFLAGS@"
-defaultIncludePaths="@DEFAULT_INCLUDE_PATHS@"
+defaultIncludePaths="@DEFAULT_INCLUDE_PATHS@:@SST_MACRO@/include"
 clangBin="@CLANG_INSTALL_DIR@"
 
 sstCppFlags = [
 "@SST_CPPFLAGS@",
 "@CPPFLAGS@",
-"-I@SST_MACRO@/include",
 "-I@SST_MACRO@/include/sstmac",
+"-I@SST_MACRO@/include",
 "-I@SST_MACRO@/include/sstmac/software/libraries",
 "-I@SST_MACRO@/include/sstmac/tools",
 "-I@SST_MACRO@/include/sumi",
