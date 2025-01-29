@@ -116,7 +116,7 @@ def addModeDefines(ctx, args):
 
 def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   from hgccvars import prefix
-  from hgccvars import defaultIncludePaths, includeDir
+  from hgccvars import defaultIncludePaths, includeDir, includeDirMacro
   from hgccutils import cleanFlag, swapSuffix, addPrefixAndRebase, addPrefix
   from hgccvars import clangCppFlagsStr, clangLdFlagsStr
   from hgccvars import clangLibtoolingCxxFlagsStr, clangLibtoolingCFlagsStr
@@ -135,9 +135,9 @@ def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   for path in rawPaths:
     cleanPaths.append(os.path.abspath(path))
   defaultIncludePaths = ":".join(cleanPaths)
-  defaultIncludePaths += ":" + cleanFlag(includeDir)
+  #defaultIncludePaths += ":" + cleanFlag(includeDir)
 
-  clangDeglobal = os.path.join(prefix, "bin", "sstmac_clang")
+  clangDeglobal = os.path.join(prefix, "bin", "ssthg_clang")
   clangCmdArr = [clangDeglobal]
   clangCmdArr.append(ppTmpFile)
   clangCmdArr.extend(ctx.clangArgs)
@@ -145,7 +145,7 @@ def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   clangCmdArr.append("--")
   #all of the compiler options go after the -- separator
   #fix intrinsics which might not be known to clang if using a different compiler
-  intrinsicsFixerPath = os.path.join(cleanFlag(includeDir), "sstmac", "replacements", "fixIntrinsics.h")
+  intrinsicsFixerPath = os.path.join(cleanFlag(includeDirMacro), "sstmac", "replacements", "fixIntrinsics.h")
   clangCmdArr.append("-include")
   clangCmdArr.append(intrinsicsFixerPath)
   clangCmdArr.append("-stdlib=libc++")

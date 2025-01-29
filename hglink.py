@@ -44,8 +44,8 @@ Questions? Contact sst-macro-help@sandia.gov
 
 def addLink(ctx, ldTarget, args, cmds, objects, toExe=False):
   #xargs includes the list of object files
-  from sstccvars import prefix
-  from sstccvars import soFlagsStr
+  from hgccvars import prefix
+  from hgccvars import soFlagsStr
   ldpathMaker = "-Wl,-rpath,%s/lib" % prefix
   linkCmdArr = [ctx.ld, ldpathMaker] 
   linkCmdArr.extend(ctx.ldFlags)

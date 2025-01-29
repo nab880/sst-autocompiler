@@ -233,7 +233,7 @@ def run(typ, extraLibs=""):
   import platform
   from configlib import getstatusoutput
   from hgccvars import sstLdFlags, sstCppFlags
-  from hgccvars import prefix, execPrefix, includeDir, cc, cxx, spackcc, spackcxx
+  from hgccvars import prefix, execPrefix, includeDir, includeDirMacro, cc, cxx, spackcc, spackcxx
   from hgccvars import sstCxxFlagsStr, sstCFlagsStr
   from hgccvars import includeDir
   from hgccvars import sstCore
@@ -384,10 +384,10 @@ def run(typ, extraLibs=""):
 
   #unless told otherwise, I am skeletonizinng
   ctx.setDefaultMode(ctx.SKELETONIZE)
-  from sstcompile import addModeDefines
+  from hgcompile import addModeDefines
   addModeDefines(ctx, args)
 
-  from sstlink import addModeLinks
+  from hglink import addModeLinks
   addModeLinks(ctx, args)
   
   #this is probably cmake being a jack-donkey during configure, overwrite it
@@ -396,7 +396,7 @@ def run(typ, extraLibs=""):
   #if we are in simulate mode, we have to create the "replacement" environment
   #we do this by rerouting all the headers to SST/macro headers
   if ctx.simulateMode():
-    include_root = cleanFlag(includeDir)
+    include_root = cleanFlag(includeDirMacro)
     repldir = os.path.join(include_root, "sstmac", "replacements")
     repldir = cleanFlag(repldir)
     args.I.append(os.path.join(include_root, "sumi"))
@@ -547,9 +547,9 @@ def run(typ, extraLibs=""):
 
   runLinker = not args.preprocess and not args.compile
 
-  from sstcompile import addSrc2SrcCompile, addComponentCompile
-  from sstcompile import addCompile, addPreprocess
-  from sstlink import addLink
+  from hgcompile import addSrc2SrcCompile, addComponentCompile
+  from hgcompile import addCompile, addPreprocess
+  from hglink import addLink
 
   #the format of the entry in the cmd arr is as follows
   # [outfile, [cmds,...], [tmpFiles,...]]

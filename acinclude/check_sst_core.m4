@@ -16,10 +16,6 @@ AC_ARG_WITH([sst-core],
 )
 
 if test "X$have_integrated_core" = "Xyes"; then
-  AC_CONFIG_FILES([bin/pysstmac], [chmod +x bin/pysstmac])
-  AC_CONFIG_FILES([bin/sstmac-check], [chmod +x bin/sstmac-check])
-  AC_CONFIG_FILES([tests/api/mpi/testexec], [chmod +x tests/api/mpi/testexec])
-  AC_CONFIG_FILES([tests/api/globals/testexec], [chmod +x tests/api/globals/testexec])
   AC_DEFINE_UNQUOTED([INTEGRATED_SST_CORE], 1, [Run on integrated SST core])
   AC_SUBST([sst_prefix], "$SST")
   AM_CONDITIONAL([INTEGRATED_SST_CORE], true)

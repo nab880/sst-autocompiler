@@ -69,6 +69,10 @@ LT_INIT
 
 LT_INIT([shared disable-static])
 
+CHECK_SST_CORE()
+CHECK_SST_ELEMENTS()
+CHECK_SST_MACRO()
+
 os=`$srcdir/config_tools/get_os`
 
 if test "X$os" = "Xubuntu"; then
@@ -91,6 +95,8 @@ CHECK_CXX_STD()
 #AM_CONDITIONAL(HAVE_REGEXP, false)
 
 CHECK_CLANG_LLVM()
+
+CHECK_SPACK()
 
 #-------------------------------------------------
 # Finalize 

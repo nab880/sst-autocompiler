@@ -57,13 +57,11 @@ clangBin="@CLANG_INSTALL_DIR@"
 sstCppFlags = [
 "@SST_CPPFLAGS@",
 "@CPPFLAGS@",
-"-I${includedir}/sstmac",
-"-I${includedir}",
-"-I${includedir}/include",
-"-I${includedir}/memoization",
-"-I${includedir}/sstmac/software/libraries",
-"-I${includedir}/sstmac/tools",
-"-I${includedir}/sumi",
+"-I@SST_MACRO@/include",
+"-I@SST_MACRO@/include/sstmac",
+"-I@SST_MACRO@/include/sstmac/software/libraries",
+"-I@SST_MACRO@/include/sstmac/tools",
+"-I@SST_MACRO@/include/sumi",
 "-DSSTMAC=1",
 ]
 
@@ -77,6 +75,7 @@ buldDir="@abs_top_builddir@"
 prefix="@prefix@"
 execPrefix="@exec_prefix@"
 includeDir="@includedir@"
+includeDirMacro="@SST_MACRO@/include"
 sstStdFlag="@STD_CXXFLAGS@"
 sstCxxFlagsStr="@CXXFLAGS@ @SST_CXXFLAGS@ @STD_CXXFLAGS@"
 sstCFlagsStr="@CFLAGS@"
