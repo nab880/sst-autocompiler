@@ -15,7 +15,10 @@ dist_bin_SCRIPTS = \
   hglink.py \
   configlib.py
 
-bin_SCRIPTS = hgccvars.py
+bin_SCRIPTS = \
+  hgccvars.py \
+  hgcc \
+  hg++
 
 AM_LDFLAGS = -ldl
 
