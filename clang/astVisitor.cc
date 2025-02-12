@@ -445,7 +445,7 @@ SkeletonASTVisitor::isInSystemHeader(SourceLocation loc)
       //found no matches
       return false;
     } else {
-      return validHeaders_.find(fullpath) == validHeaders_.end();
+      return validHeaders_.find(fullpath.data()) == validHeaders_.end();
     }
   } else {
     std::string err_str = std::string("realpath(...) failed to resolve ") + ploc.getFilename() + ". Cannot continue.";
@@ -1328,7 +1328,8 @@ SkeletonASTVisitor::doTraverseLambda(LambdaExpr* expr)
           //           "variable does not capture anything");
         }
 
-        VarDecl* vd = cap.getCapturedVar();
+        VarDecl* vd = cast<VarDecl>(cap.getCapturedVar());
+        // cast<VarDecl>(C->getCapturedVar());
         Expr* needed = vd->getInit();
         if (!needed){
           continue; //there is no init to worry about, I guess
