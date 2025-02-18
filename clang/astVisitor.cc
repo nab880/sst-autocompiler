@@ -1329,7 +1329,6 @@ SkeletonASTVisitor::doTraverseLambda(LambdaExpr* expr)
         }
 
         VarDecl* vd = cast<VarDecl>(cap.getCapturedVar());
-        // cast<VarDecl>(C->getCapturedVar());
         Expr* needed = vd->getInit();
         if (!needed){
           continue; //there is no init to worry about, I guess
