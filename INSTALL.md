@@ -15,10 +15,11 @@ ccmake -S ../llvm \
 -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 -DCMAKE_INSTALL_PREFIX=$HOME/llvm-project-18.1.8.src/install \
 -DLLVM_INCLUDE_TESTS=OFF \
+-DLLVM_ENABLE_ZSTD=OFF \
 -DLLVM_TARGETS_TO_BUILD=AArch64 \
 -G Ninja
 
-ninja && ninja install
+ninja -j 6 && ninja install
 
 export PATH=$HOME/llvm-project-18.1.8.src/install/bin:$PATH
 export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
@@ -40,4 +41,6 @@ mkdir build && cd build
 --with-clang=$HOME/llvm-project-18.1.8.src/install
 
 make V=1 && make install
+
+export PATH=$HOME/sst-autocompiler/install/bin:$PATH
 ```
