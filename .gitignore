@@ -14,7 +14,10 @@ Makefile.in
 acinclude/libtool.m4
 acinclude/ltargz.m4
 acinclude/ltdl.m4
+acinclude/ltoptions.m4
+acinclude/ltsugar.m4
 acinclude/ltversion.m4
+acinclude/lt~obsolete.m4
 autom4te.cache
 /autoscan.log
 /autoscan-*.log
@@ -23,10 +26,12 @@ autom4te.cache
 /config.cache
 /config.guess
 /config.h.in
+/config.h.in~
 /config.log
 /config.status
 /config.sub
 /configure
+/configure~
 /configure.scan
 /depcomp
 /install-sh
