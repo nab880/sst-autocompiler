@@ -16,7 +16,8 @@ ccmake -S ../llvm \
 -DCMAKE_INSTALL_PREFIX=$HOME/llvm-project-18.1.8.src/install \
 -DLLVM_INCLUDE_TESTS=OFF \
 -DLLVM_ENABLE_ZSTD=OFF \
--DLLVM_TARGETS_TO_BUILD=AArch64 \
+-DLLVM_USE_LINKER=lld \
+-DLLVM_TARGETS_TO_BUILD=host \
 -G Ninja
 
 ninja -j 6 && ninja install
