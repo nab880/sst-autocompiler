@@ -29,6 +29,9 @@ export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
 # which clang[++]
 # clang++ foo.cc
 
+# use llvm lld; sometimes regular ld fails
+export LDFLAGS="-fuse-ld=lld"
+
 cd
 
 git clone https://github.com/nab880/sst-autocompiler.git
