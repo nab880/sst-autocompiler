@@ -9,7 +9,7 @@ cd llvm-project-18.1.8.src
 mkdir build && cd build
 
 ccmake -S ../llvm \
--DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
+-DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld" \
 -DLLVM_ENABLE_RUNTIMES=all \
 -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
 -DCMAKE_BUILD_TYPE=RelWithDebInfo \
