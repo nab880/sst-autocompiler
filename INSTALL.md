@@ -45,6 +45,7 @@ cd
 git clone https://github.com/jmlapre/sst-macro.git
 cd sst-macro
 git switch update_to_llvm18
+./autogen.sh
 mkdir build && cd build
 
 ../configure CXX=clang++ CC=clang \
@@ -61,6 +62,7 @@ cd
 git clone https://github.com/jmlapre/sst-autocompiler.git
 cd sst-autocompiler
 git switch update_to_llvm_18
+./autogen.sh
 mkdir build && cd build
 
 ../configure CXX=clang++ CC=clang \
