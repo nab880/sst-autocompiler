@@ -1,7 +1,5 @@
 # Installing SST-autocompiler
 
-Download [llvm-project-18.1.8.src.tar.xz](https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz)
-
 ## Load modules (optional)
 ```bash
 module load sems-clang
@@ -41,9 +39,9 @@ export LDFLAGS="-fuse-ld=lld"
 cd
 
 # Install sst-macro
-git clone https://github.com/jmlapre/sst-macro.git
+git clone https://github.com/sstsimulator/sst-macro.git
 cd sst-macro
-git switch update_to_llvm18
+git switch devel
 ./autogen.sh
 mkdir build && cd build
 
@@ -58,9 +56,9 @@ export PATH=$HOME/sst-macro/install/bin:$PATH
 cd
 
 # Install sst-autocompiler
-git clone https://github.com/jmlapre/sst-autocompiler.git
+git clone https://github.com/nab880/sst-autocompiler.git
 cd sst-autocompiler
-git switch update_to_llvm_18
+# As of 2025-02-26 we only have the main branch
 ./autogen.sh
 mkdir build && cd build
 
