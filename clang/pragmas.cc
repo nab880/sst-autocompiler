@@ -575,7 +575,7 @@ void
 SSTOverheadPragma::activate(Stmt *s)
 {
   std::stringstream sstr;
-  sstr << "sstmac_advance_time(\""
+  sstr << "ssthg_advance_time(\""
        << paramName_
        << "\");";
   CompilerGlobals::rewriter.InsertText(getStart(s), sstr.str(), false);
@@ -589,13 +589,13 @@ SSTAdvanceTimePragma::activate(Stmt *s)
   std::string replacement;
 
   if (units_ == "sec" || units_ == "s"){
-    replacement = "sstmac_compute(" + amount_ + ");";
+    replacement = "ssthg_compute(" + amount_ + ");";
   } else if (units_ == "msec" || units_ == "msec"){
-    replacement = "sstmac_msleep(" + amount_ + ");";
+    replacement = "ssthg_msleep(" + amount_ + ");";
   } else if (units_ == "usec" || units_ == "us"){
-    replacement = "sstmac_usleep(" + amount_ + ");";
+    replacement = "ssthg_usleep(" + amount_ + ");";
   } else if (units_ == "nsec" || units_ == "ns"){
-    replacement = "sstmac_nanosleep(" + amount_ + ");";
+    replacement = "ssthg_nanosleep(" + amount_ + ");";
   } else {
     std::string error = "invalid time units: " + units_ +
         ": must be sec, msec, usec, or nsec";
@@ -729,7 +729,7 @@ SSTBlockingPragma::SSTBlockingPragma(SourceLocation loc, std::map<std::string, s
 void
 SSTBlockingPragma::activate(Stmt* s)
 {
-  std::string text = "sstmac_blocking_call(" + condition_ + "," + timeout_ + ",\"" + api_ + "\");";
+  std::string text = "ssthg_blocking_call(" + condition_ + "," + timeout_ + ",\"" + api_ + "\");";
   CompilerGlobals::rewriter.InsertText(getStart(s), text, false, false);
 }
 
@@ -1139,7 +1139,7 @@ void
 SSTStackAllocPragma::activate(Stmt *s)
 {
   if (toFree_.size()){
-    std::string repl = "sstmac_free_stack(" + toFree_ + ")";
+    std::string repl = "ssthg_free_stack(" + toFree_ + ")";
     replace(s, repl);
     throw StmtDeleteException(s);
   } else {
@@ -1165,7 +1165,7 @@ SSTStackAllocPragma::activate(Stmt *s)
 
     toRepl = SkeletonASTVisitor::getUnderlyingExpr(toRepl);
 
-    std::string repl = "sstmac_alloc_stack(" + stackSize_ + "," + mdataSize_ + ")";
+    std::string repl = "ssthg_alloc_stack(" + stackSize_ + "," + mdataSize_ + ")";
     replace(toRepl, repl);
     throw StmtDeleteException(s);
   }

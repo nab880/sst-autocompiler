@@ -45,14 +45,14 @@ Questions? Contact sst-macro-help@sandia.gov
 
 def addPreprocess(ctx, sourceFile, outputFile, args, cmds):
   ppArgs = [ctx.compiler] 
-  for entry in ctx.directIncludes:
-    ppArgs.append("-include")
-    ppArgs.append(entry)
   ppArgs.extend(map(lambda x: "-D%s" % x, ctx.defines))
   ppArgs.extend(map(lambda x: "-D%s" % x, args.D))
   ppArgs.extend(map(lambda x: "-I%s" % x, args.I)) 
   ppArgs.extend(ctx.cppFlags)
   ppArgs.extend(ctx.compilerFlags)
+  for entry in ctx.directIncludes:
+    ppArgs.append("-include")
+    ppArgs.append(entry)
   ppArgs.append("-E")
   ppArgs.append(sourceFile)
   if args.O:
@@ -116,7 +116,7 @@ def addModeDefines(ctx, args):
 
 def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   from hgccvars import prefix
-  from hgccvars import defaultIncludePaths, includeDir, includeDirMacro
+  from hgccvars import defaultIncludePaths, includeDir, includeDirElements
   from hgccutils import cleanFlag, swapSuffix, addPrefixAndRebase, addPrefix
   from hgccvars import clangCppFlagsStr, clangLdFlagsStr
   from hgccvars import clangLibtoolingCxxFlagsStr, clangLibtoolingCFlagsStr
@@ -145,9 +145,9 @@ def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   clangCmdArr.append("--")
   #all of the compiler options go after the -- separator
   #fix intrinsics which might not be known to clang if using a different compiler
-  intrinsicsFixerPath = os.path.join(cleanFlag(includeDirMacro), "sstmac", "replacements", "fixIntrinsics.h")
-  clangCmdArr.append("-include")
-  clangCmdArr.append(intrinsicsFixerPath)
+  #intrinsicsFixerPath = os.path.join(cleanFlag(includeDirElements), "mercury", "libraries", "system", "replacements", "fixIntrinsics.h")
+  #clangCmdArr.append("-include")
+  #clangCmdArr.append(intrinsicsFixerPath)
   clangCmdArr.append("-stdlib=libc++")
   if args.std:
     clangCmdArr.append("-std=%s" % args.std)

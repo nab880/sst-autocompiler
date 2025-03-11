@@ -1007,7 +1007,7 @@ class SkeletonASTVisitor : public clang::RecursiveASTVisitor<SkeletonASTVisitor>
   int insideCxxMethod_;
 
   /** Lookup tables for functions or variables needing special operations */
-  std::set<std::string> sstmacFxnPrepends_;
+  std::set<std::string> ssthgFxnPrepends_;
   typedef void (SkeletonASTVisitor::*MPI_Call)(clang::CallExpr* expr);
   std::map<std::string, MPI_Call> mpiCalls_;
   std::set<std::string> reservedNames_;

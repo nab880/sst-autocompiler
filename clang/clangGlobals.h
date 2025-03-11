@@ -85,8 +85,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Questions? Contact sst-macro-help@sandia.gov
 */
 
-#ifndef sstmac_clang_globals_h
-#define sstmac_clang_globals_h
+#ifndef ssthg_clang_globals_h
+#define ssthg_clang_globals_h
 
 #include <map>
 #include <list>
@@ -213,7 +213,7 @@ struct CompilerGlobals {
     visitor.firstPass = &v;
   }
 
-  static llvm::cl::OptionCategory sstmacCategoryOpt;
+  static llvm::cl::OptionCategory ssthgCategoryOpt;
   static llvm::cl::opt<bool> memoizeOpt;
   static llvm::cl::opt<bool> skeletonizeOpt;
   static llvm::cl::opt<bool> shadowizeOpt;

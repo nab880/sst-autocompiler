@@ -676,9 +676,9 @@ ComputeVisitor::replaceStmt(Stmt* stmt, Loop& loop, const std::string& nthread)
   }
 
   if (nthread.empty()){
-    sstr << "sstmac_compute_detailed(flops,intops,readBytes); }";
+    sstr << "ssthg_compute_detailed(flops,intops,readBytes); }";
   } else {
-    sstr << "sstmac_compute_detailed_nthr(flops,intops,readBytes,"
+    sstr << "ssthg_compute_detailed_nthr(flops,intops,readBytes,"
          << nthread << "); }";
   }
   replace(stmt,sstr.str());

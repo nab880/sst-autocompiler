@@ -124,26 +124,26 @@ struct GlobalVarNamespace
       Variable& var = pair.second;
       os << indent << "extern int __sizeof_" << name << ";\n";
       os << indent << "int __offset_" << name << " = 0;";
-      //   << "sstmac::GlobalVariable::init("
+      //   << "ssthg::GlobalVariable::init("
       //   << "__sizeof_" << name
       //   << ",\"" << name << "\""
       //   << "," << std::boolalpha << var.isThreadLocal
       //   << ");\n";
       if (!var.isCpp || var.isFxnStatic){
         //we have to register the init function
-        os << indent << "extern \"C\" void sstmac_init_" << name << "(void*);\n"
-          << "sstmac::CppGlobalRegisterGuard "
-          << name << "_sstmac_ctor("
+        os << indent << "extern \"C\" void ssthg_init_" << name << "(void*);\n"
+          << "ssthg::CppGlobalRegisterGuard "
+          << name << "_ssthg_ctor("
           << "__offset_" << name
           << ", __sizeof_" << name
           << ", " << std::boolalpha << var.isThreadLocal
           << ", \"" << name << "\""
-          << ", sstmac_init_" << name << ");";
+          << ", ssthg_init_" << name << ");";
       }
     }
 
     for (auto& pair : memoizationModels){
-      os << "static sstmac::Memoization memoize_" << makeCxxName(pair.first)
+      os << "static ssthg::Memoization memoize_" << makeCxxName(pair.first)
          << "(\"" << pair.first << "\",\"" << pair.second << "\");\n";
     }
 

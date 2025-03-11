@@ -233,7 +233,7 @@ def run(typ, extraLibs=""):
   import platform
   from configlib import getstatusoutput
   from hgccvars import sstLdFlags, sstCppFlags
-  from hgccvars import prefix, execPrefix, includeDir, includeDirMacro, cc, cxx, spackcc, spackcxx
+  from hgccvars import prefix, execPrefix, includeDir, includeDirElements, cc, cxx, spackcc, spackcxx
   from hgccvars import sstCxxFlagsStr, sstCFlagsStr
   from hgccvars import includeDir
   from hgccvars import sstCore
@@ -396,8 +396,8 @@ def run(typ, extraLibs=""):
   #if we are in simulate mode, we have to create the "replacement" environment
   #we do this by rerouting all the headers to SST/macro headers
   if ctx.simulateMode():
-    include_root = cleanFlag(includeDirMacro)
-    repldir = os.path.join(include_root, "sstmac", "replacements")
+    include_root = cleanFlag(includeDirElements)
+    repldir = os.path.join(include_root, "mercury", "libraries", "replacements")
     repldir = cleanFlag(repldir)
     args.I.append(os.path.join(include_root, "sumi"))
     args.I.insert(0,repldir)
@@ -407,8 +407,8 @@ def run(typ, extraLibs=""):
       ctx.directIncludes.append("cstdint")
     else:
       ctx.directIncludes.append("stdint.h")
-    ctx.directIncludes.append("sstmac/compute.h")
-    ctx.directIncludes.append("sstmac/skeleton.h")
+    #ctx.directIncludes.append( os.path.join( includeDirElements, "mercury", "libraries", "compute", "compute_library.h") )
+    ctx.directIncludes.append( os.path.join( includeDirElements, "mercury", "common", "skeleton.h") )
 
     if not args.disable_mpi:
       args.I.insert(0,os.path.join(repldir, "mpi"))

@@ -209,16 +209,16 @@ ReplaceAction::EndSourceFileAction()
   std::ofstream ofs(sstGlobalFile.c_str());
   if (ofs.good()){
     //add the header files needed
-    ofs << "#include <sstmac/software/process/cppglobal.h>\n"
-        << "#include <sstmac/software/process/memoize.h>\n\n";
+    ofs << "#include <mercury/operating_system/software/process/cppglobal.h>\n"
+        << "#include <mercury/operating_system/software/process/memoize.h>\n\n";
     globalNs_.genSSTCode(ofs,"");
     skeleton_visitor_.registerNewKeywords(ofs);
     if (skeleton_visitor_.hasCStyleMain()){
       std::string appname = skeleton_visitor_.getAppName();
       ofs << "int userSkeletonMainInitFxn(const char* name, int (*foo)(int,char**));\n"
-         << "extern \"C\" int sstmac_user_main_" << appname << "(int argc, char** argv);\n"
-         << "int " << appname << "_sstmac_initer = userSkeletonMainInitFxn("
-           << "\"" << appname << "\",sstmac_user_main_" << appname << ");\n\n"
+         << "extern \"C\" int ssthg_user_main_" << appname << "(int argc, char** argv);\n"
+         << "int " << appname << "_ssthg_initer = userSkeletonMainInitFxn("
+           << "\"" << appname << "\",ssthg_user_main_" << appname << ");\n\n"
            << "extern \"C\" const char exe_main_name[] = \"" << appname << "\";\n";
     }
 

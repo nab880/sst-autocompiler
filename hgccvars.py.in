@@ -51,18 +51,17 @@ clangCppFlagsStr="@CLANG_CPPFLAGS@"
 clangLdFlagsStr="@CLANG_LDFLAGS@"
 clangLibtoolingCxxFlagsStr="@CLANG_LIBTOOLING_CXX_FLAGS@ @MACSDK_CXXFLAGS@"
 clangLibtoolingCFlagsStr="@CLANG_LIBTOOLING_C_FLAGS@ @MACSDK_CFLAGS@"
-defaultIncludePaths="@DEFAULT_INCLUDE_PATHS@:@SST_MACRO@/include"
+defaultIncludePaths="@DEFAULT_INCLUDE_PATHS@:@SST_ELEMENTS@/include"
 clangBin="@CLANG_INSTALL_DIR@"
 
 sstCppFlags = [
 "@SST_CPPFLAGS@",
 "@CPPFLAGS@",
-"-I@SST_MACRO@/include/sstmac",
-"-I@SST_MACRO@/include",
-"-I@SST_MACRO@/include/sstmac/software/libraries",
-"-I@SST_MACRO@/include/sstmac/tools",
-"-I@SST_MACRO@/include/sumi",
-"-DSSTMAC=1",
+"-I@SST_ELEMENTS@/include/sst/elements",
+"-I@SST_ELEMENTS@/include/sst/elements/mercury/common",
+"-I@SST_ELEMENTS@/include/sst/elements/mercury/software/libraries",
+"-I@SST_ELEMENTS@/include/sst/elements/sumi",
+"-I@SST_ELEMENTS@/include/sst/elements/mask-mpi",
 ]
 
 clangDir="@CLANG_INSTALL_DIR@"
@@ -75,7 +74,7 @@ buldDir="@abs_top_builddir@"
 prefix="@prefix@"
 execPrefix="@exec_prefix@"
 includeDir="@includedir@"
-includeDirMacro="@SST_MACRO@/include"
+includeDirElements="@SST_ELEMENTS@/include/sst/elements"
 sstStdFlag="@STD_CXXFLAGS@"
 sstCxxFlagsStr="@CXXFLAGS@ @SST_CXXFLAGS@ @STD_CXXFLAGS@"
 sstCFlagsStr="@CFLAGS@"

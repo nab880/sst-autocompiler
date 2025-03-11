@@ -38,7 +38,7 @@ ssthg_clang_SOURCES = \
   clang/astVisitor.cc 
 
 ssthg_clang_CXXFLAGS = -fno-rtti $(AM_CXXFLAGS)
-ssthg_clang_CPPFLAGS = $(CLANG_CPPFLAGS) $(AM_CPPFLAGS)
+ssthg_clang_CPPFLAGS = $(CLANG_CPPFLAGS) $(AM_CPPFLAGS) $(SST_CPPFLAGS)
 
 if HAVE_CXX17
 ssthg_clang_SOURCES += \

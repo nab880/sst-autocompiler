@@ -53,39 +53,39 @@ Questions? Contact sst-macro-help@sandia.gov
 clang::LangOptions Printing::langOpts;
 clang::PrintingPolicy Printing::policy(Printing::langOpts);
 
-llvm::cl::OptionCategory CompilerGlobals::sstmacCategoryOpt("SST/Macro options");
+llvm::cl::OptionCategory CompilerGlobals::ssthgCategoryOpt("SST/Macro options");
 llvm::cl::opt<std::string> CompilerGlobals::includeListOpt("system-includes",
   llvm::cl::desc("Give the list of default system include paths for the pre-processing compiler"),
   llvm::cl::value_desc("list:of:paths"),
-  llvm::cl::cat(sstmacCategoryOpt),
+  llvm::cl::cat(ssthgCategoryOpt),
   llvm::cl::ValueRequired);
 llvm::cl::opt<bool> CompilerGlobals::skeletonizeOpt("skeletonize",
   llvm::cl::desc("Run skeletonization source-to-source"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::memoizeOpt("memoize",
   llvm::cl::desc("Run memoization source-to-source"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::encapsulateOpt("encapsulate",
   llvm::cl::desc("Run skeletonization source-to-source"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::shadowizeOpt("shadowize",
   llvm::cl::desc("Run memoization source-to-source"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::puppetizeOpt("puppetize",
   llvm::cl::desc("Run skeletonization source-to-source"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::verboseOpt("verbose",
   llvm::cl::desc("Print verbose source-to-source output"),
-  llvm::cl::cat(sstmacCategoryOpt));
+  llvm::cl::cat(ssthgCategoryOpt));
 static llvm::cl::alias verboseAliasOpt("v",
   llvm::cl::aliasopt(CompilerGlobals::verboseOpt),
-  llvm::cl::cat(CompilerGlobals::sstmacCategoryOpt));
+  llvm::cl::cat(CompilerGlobals::ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::refactorMainOpt("refactor-main",
   llvm::cl::desc("Refactor main, rerouting to SST/macro main wrapper"),
-  llvm::cl::cat(CompilerGlobals::sstmacCategoryOpt));
+  llvm::cl::cat(CompilerGlobals::ssthgCategoryOpt));
 llvm::cl::opt<bool> CompilerGlobals::noRefactorMainOpt("no-refactor-main",
   llvm::cl::desc("Do not refactor main, leaving symbol as is"),
-  llvm::cl::cat(CompilerGlobals::sstmacCategoryOpt));
+  llvm::cl::cat(CompilerGlobals::ssthgCategoryOpt));
 
 modes::Mode CompilerGlobals::mode;
 int CompilerGlobals::modeMask;
@@ -250,15 +250,15 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
 void
 SkeletonASTVisitor::initMPICalls()
 {
-  mpiCalls_["sstmac_irecv"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["sstmac_isend"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["sstmac_recv"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["sstmac_send"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["sstmac_bcast"] = &SkeletonASTVisitor::visitPt2Pt; //bit of a hack
-  mpiCalls_["sstmac_allreduce"] = &SkeletonASTVisitor::visitReduce;
-  mpiCalls_["sstmac_reduce"] = &SkeletonASTVisitor::visitReduce;
-  mpiCalls_["sstmac_allgather"] = &SkeletonASTVisitor::visitCollective;
-  mpiCalls_["sstmac_alltoall"] = &SkeletonASTVisitor::visitCollective;
+  mpiCalls_["ssthg_irecv"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["ssthg_isend"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["ssthg_recv"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["ssthg_send"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["ssthg_bcast"] = &SkeletonASTVisitor::visitPt2Pt; //bit of a hack
+  mpiCalls_["ssthg_allreduce"] = &SkeletonASTVisitor::visitReduce;
+  mpiCalls_["ssthg_reduce"] = &SkeletonASTVisitor::visitReduce;
+  mpiCalls_["ssthg_allgather"] = &SkeletonASTVisitor::visitCollective;
+  mpiCalls_["ssthg_alltoall"] = &SkeletonASTVisitor::visitCollective;
 
   mpiCalls_["irecv"] = &SkeletonASTVisitor::visitPt2Pt;
   mpiCalls_["isend"] = &SkeletonASTVisitor::visitPt2Pt;
@@ -315,11 +315,11 @@ SkeletonASTVisitor::initReservedNames()
   globalVarWhitelist_.insert("getdate_err");
   globalVarWhitelist_.insert("optopt");
   globalVarWhitelist_.insert("__mb_cur_max");
-  globalVarWhitelist_.insert("sstmac_global_stacksize");
+  globalVarWhitelist_.insert("ssthg_global_stacksize");
   globalVarWhitelist_.insert("__stderrp");
   globalVarWhitelist_.insert("__stdinp");
 
-  sstmacFxnPrepends_.insert("free");
+  ssthgFxnPrepends_.insert("free");
 }
 
 void
@@ -1048,8 +1048,8 @@ SkeletonASTVisitor::TraverseCallExpr(CallExpr* expr, DataRecursionQueue*  /*queu
       if (fxn->getStmtClass() == Stmt::DeclRefExprClass){
         DeclRefExpr* dref = cast<DeclRefExpr>(fxn);
         std::string fxnName = dref->getFoundDecl()->getNameAsString();
-        if (sstmacFxnPrepends_.find(fxnName) != sstmacFxnPrepends_.end()){
-          insertBefore(expr->getCallee(), "sstmac_");
+        if (ssthgFxnPrepends_.find(fxnName) != ssthgFxnPrepends_.end()){
+          insertBefore(expr->getCallee(), "ssthg_");
         }
 
         auto iter = mpiCalls_.find(fxnName);
@@ -1151,7 +1151,7 @@ SkeletonASTVisitor::checkArray(VarDecl* D)
     info->fqTypedefName = currentNs_->nsPrefix() + info->typedefName;
     //something of the form type x[N][M];
     //we possible need to first: typedef type tx[N][M];
-    //replacement global will be tx* xRepl = &(sstmac_global_data + offset)
+    //replacement global will be tx* xRepl = &(ssthg_global_data + offset)
     const ArrayType* aty = ty->getAsArrayTypeUnsafe();
     std::stringstream sstr;
     cArrayConfig cfg;
@@ -1180,7 +1180,7 @@ SkeletonASTVisitor::checkArray(VarDecl* D)
     if (ety->isConstantArrayType()){
       //something of the form type x[][M]
       //we need to first: typedef type tx[][M];
-      //replacement global will be tx* xRepl = &(sstmac_global_data + offset)
+      //replacement global will be tx* xRepl = &(ssthg_global_data + offset)
       info->typedefName = "type_" + D->getNameAsString();
       info->fqTypedefName = currentNs_->nsPrefix() + info->typedefName;
       std::stringstream sstr;
@@ -1731,7 +1731,7 @@ SkeletonASTVisitor::TraverseVarDecl(VarDecl* D)
       }
 
       std::stringstream sstTypeOs;
-      sstTypeOs << " sstmac::CppVarTemplate<" << clsName
+      sstTypeOs << " ssthg::CppVarTemplate<" << clsName
            << "," << GetAsString(D->getType())
            << "," << std::boolalpha << isThreadLocal(D)
            << "> ";
@@ -1770,14 +1770,14 @@ SkeletonASTVisitor::TraverseVarDecl(VarDecl* D)
       }
     } else {
       std::stringstream sstr;
-      sstr << "struct sstmacTagClass" << D->getNameAsString() << "{}; ";
+      sstr << "struct ssthgTagClass" << D->getNameAsString() << "{}; ";
       VarTemplateDecl* vtd = D->getDescribedVarTemplate();
       TemplateParameterList* theList = vtd->getTemplateParameters();
       getTemplatePrefixString(sstr, theList);
       if (D->isStaticLocal()){
         sstr << " static";
       }
-      sstr << " sstmac::CppVarTemplate<sstmacTagClass" << D->getNameAsString()
+      sstr << " ssthg::CppVarTemplate<ssthgTagClass" << D->getNameAsString()
            << "," << GetAsString(D->getType())
            << "," << std::boolalpha << isThreadLocal(D)
            << "> " << D->getNameAsString();
@@ -1888,7 +1888,7 @@ SkeletonASTVisitor::replaceMain(clang::FunctionDecl* mainFxn)
 
   std::stringstream sstr;
   if (!isC) sstr << "extern \"C\" ";
-  sstr << "int sstmac_user_main_" << mainName_ << "(";
+  sstr << "int ssthg_user_main_" << mainName_ << "(";
   if (mainFxn->getNumParams() == 2){
     sstr << "int " << mainFxn->getParamDecl(0)->getNameAsString()
          << ", char** " << mainFxn->getParamDecl(1)->getNameAsString();
@@ -1915,11 +1915,11 @@ SkeletonASTVisitor::addInContextGlobalDeclarations(clang::Stmt* body)
     std::stringstream sstr;
     sstr << "{ ";
     if (needGlobalData){
-      sstr << "char* sstmac_global_data = get_sstmac_global_data();";
-      //sstr << "printf(\"Globals=%p\\n\", sstmac_global_data);";
+      sstr << "char* ssthg_global_data = get_ssthg_global_data();";
+      //sstr << "printf(\"Globals=%p\\n\", ssthg_global_data);";
     }
     if (needTlsData){
-      sstr << "char* sstmac_tls_data = get_sstmac_tls_data();";
+      sstr << "char* ssthg_tls_data = get_ssthg_tls_data();";
     }
     for (auto d : currentGlobals){
       GlobalStandin& gs = globalStandins_[d];

@@ -69,10 +69,10 @@ LT_INIT
 
 LT_INIT([shared disable-static])
 
+SST_CPPFLAGS=
 CHECK_MPI_PARALLEL()
 CHECK_SST_CORE()
 CHECK_SST_ELEMENTS()
-CHECK_SST_MACRO()
 
 os=`$srcdir/config_tools/get_os`
 
