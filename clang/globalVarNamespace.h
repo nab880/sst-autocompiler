@@ -124,26 +124,26 @@ struct GlobalVarNamespace
       Variable& var = pair.second;
       os << indent << "extern int __sizeof_" << name << ";\n";
       os << indent << "int __offset_" << name << " = 0;";
-      //   << "ssthg::GlobalVariable::init("
+      //   << "SST::Hg::GlobalVariable::init("
       //   << "__sizeof_" << name
       //   << ",\"" << name << "\""
       //   << "," << std::boolalpha << var.isThreadLocal
       //   << ");\n";
       if (!var.isCpp || var.isFxnStatic){
         //we have to register the init function
-        os << indent << "extern \"C\" void ssthg_init_" << name << "(void*);\n"
-          << "ssthg::CppGlobalRegisterGuard "
-          << name << "_ssthg_ctor("
+        os << indent << "extern \"C\" void sst_hg_init_" << name << "(void*);\n"
+          << "SST::Hg::CppGlobalRegisterGuard "
+          << name << "_sst_hg_ctor("
           << "__offset_" << name
           << ", __sizeof_" << name
           << ", " << std::boolalpha << var.isThreadLocal
           << ", \"" << name << "\""
-          << ", ssthg_init_" << name << ");";
+          << ", sst_hg_init_" << name << ");";
       }
     }
 
     for (auto& pair : memoizationModels){
-      os << "static ssthg::Memoization memoize_" << makeCxxName(pair.first)
+      os << "static SST::Hg::Memoization memoize_" << makeCxxName(pair.first)
          << "(\"" << pair.first << "\",\"" << pair.second << "\");\n";
     }
 

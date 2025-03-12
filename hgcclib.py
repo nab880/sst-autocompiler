@@ -387,8 +387,8 @@ def run(typ, extraLibs=""):
   from hgcompile import addModeDefines
   addModeDefines(ctx, args)
 
-  from hglink import addModeLinks
-  addModeLinks(ctx, args)
+#  from hglink import addModeLinks
+#  addModeLinks(ctx, args)
   
   #this is probably cmake being a jack-donkey during configure, overwrite it
   if args.std == "c++98": args.std = "c++1y"

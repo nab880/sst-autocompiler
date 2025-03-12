@@ -166,7 +166,7 @@ SkeletonASTVisitor::setupGlobalReplacement(VarDecl *D, const std::string& namePr
       var.typeStr = GetAsString(D->getType());
       var.retType = var.typeStr + "*";
     } else {
-      std::string typedefName = D->getNameAsString() + "_ssthg_fxn_typedef";
+      std::string typedefName = D->getNameAsString() + "_sst_hg_fxn_typedef";
       std::string typedefDecl = getFxnTypedef(getStart(D), D->getType().getTypePtr(), typedefName);
       delayedInsertAfter(D, typedefDecl + ";");
       var.typeStr = typedefName;
@@ -179,7 +179,7 @@ SkeletonASTVisitor::setupGlobalReplacement(VarDecl *D, const std::string& namePr
       var.typeStr = typeStr;
       var.retType = var.typeStr + "*";
     } else {
-      std::string typedefName = D->getNameAsString() + "_ssthg_fxn_typedef";
+      std::string typedefName = D->getNameAsString() + "_sst_hg_fxn_typedef";
       std::string typedefDecl = getFxnTypedef(getStart(D), ptrSubTy, typedefName);
       int ptrDepth = std::count(typeStr.begin(), typeStr.end(), '*') - 1;
       var.typeStr = typedefName;
@@ -239,7 +239,7 @@ SkeletonASTVisitor::registerGlobalReplacement(VarDecl* D, GlobalVariableReplacem
   if (repl->useAccessor){
     globals_.insert({md, GlobalReplacement("", "_getter()", true)});
   } else {
-    std::string standinName = "ssthg_" + repl->scopeUniqueVarName;
+    std::string standinName = "sst_hg_" + repl->scopeUniqueVarName;
     if (repl->needFullNamespace){
       //we could have two variables named x in different namespaces
       //this just makes sure their global var replacements are called different things
@@ -256,17 +256,17 @@ SkeletonASTVisitor::registerGlobalReplacement(VarDecl* D, GlobalVariableReplacem
      * assume we have a global int a used in the expression
      * int sum = a + 3
      * at the beginning of the function we can create
-     * void* ssthg_global_data = get_ssthg_global_data();
-     * int* ssthg_a = (int*)(ssthg_global_data + __offset_a);
-     * then we can replace every use of a with (*ssthg_a), e.g.
-     * int sum = (*ssthg_a) + 3;
+     * void* sst_hg_global_data = get_sst_hg_global_data();
+     * int* sst_hg_a = (int*)(sst_hg_global_data + __offset_a);
+     * then we can replace every use of a with (*sst_hg_a), e.g.
+     * int sum = (*sst_hg_a) + 3;
      * if a is used many times in a function, we essentially "cache" the replacement
-     * every use of 'a' is replaced with 'ssthg_a'
+     * every use of 'a' is replaced with 'sst_hg_a'
      *
-     * in some scenarios, it's not possible to create the variable ssthg_a
+     * in some scenarios, it's not possible to create the variable sst_hg_a
      * and we need to use the global variable directly inline
      * now we have to replace every use of 'a' with
-     * *((int*)(get_ssthg_global_data() + __offset_a))
+     * *((int*)(get_sst_hg_global_data() + __offset_a))
      *
      */
 
@@ -277,11 +277,11 @@ SkeletonASTVisitor::registerGlobalReplacement(VarDecl* D, GlobalVariableReplacem
 
     cachedUseSstr << "=(" << repl->retType << ")";
     if (repl->threadLocal){
-      cachedUseSstr << "(ssthg_tls_data + ";
-      inlineUseSstr << "get_ssthg_tls_data() + ";
+      cachedUseSstr << "(sst_hg_tls_data + ";
+      inlineUseSstr << "get_sst_hg_tls_data() + ";
     } else {
-      cachedUseSstr << "(ssthg_global_data + ";
-      inlineUseSstr << "get_ssthg_global_data() + ";
+      cachedUseSstr << "(sst_hg_global_data + ";
+      inlineUseSstr << "get_sst_hg_global_data() + ";
     }
 
     if (repl->needFullNamespace){
@@ -326,7 +326,7 @@ SkeletonASTVisitor::setupClassStaticVarDecl(VarDecl* D)
     std::stringstream os;
     os << "static " << repl.typeStr << "& "
         << D->getNameAsString() << "_getter(){ "
-        << " char* data = " << (threadLocal ? "get_ssthg_tls_data(); " : "get_ssthg_global_data(); ")
+        << " char* data = " << (threadLocal ? "get_sst_hg_tls_data(); " : "get_sst_hg_global_data(); ")
         << " void* offsetPtr = data + __offset_" << D->getNameAsString() << ";"
         << "return *((" << repl.retType << ")(offsetPtr));"
         << "}";
@@ -376,7 +376,7 @@ SkeletonASTVisitor::setupCGlobalVar(VarDecl* D, const std::string& scopePrefix)
   GlobalVariableReplacement var = setupGlobalReplacement(D, scopePrefix, false, false, true);
   newVarSstr << "extern int __offset_" << var.scopeUniqueVarName << "; ";
   if (isGlobalDefinition(D, &var)){
-    std::string initFxnName = "ssthg_init_" + var.scopeUniqueVarName;
+    std::string initFxnName = "sst_hg_init_" + var.scopeUniqueVarName;
     //add an init function for it
     newVarSstr << "void " << initFxnName << "(void* ptr){";
 
@@ -421,7 +421,7 @@ SkeletonASTVisitor::setupCppGlobalVar(VarDecl* D, const std::string& scopePrefix
       repl.typeStr = eraseAllStructQualifiers(repl.typeStr);
     }
 
-    newVarSstr << "static std::function<void(void*)> ssthg_init_" << repl.scopeUniqueVarName
+    newVarSstr << "static std::function<void(void*)> sst_hg_init_" << repl.scopeUniqueVarName
                << " = [](void* ptr){"
                   " new (ptr) " << repl.typeStr;
     if (cppCtorArgs){
@@ -439,13 +439,13 @@ SkeletonASTVisitor::setupCppGlobalVar(VarDecl* D, const std::string& scopePrefix
     if (D->getStorageClass() == SC_Static){
       newVarSstr << "static ";
     }
-    newVarSstr << "ssthg::CppGlobalRegisterGuard "
-               << D->getNameAsString() << "_ssthg_ctor("
+    newVarSstr << "SST::Hg::CppGlobalRegisterGuard "
+               << D->getNameAsString() << "_sst_hg_ctor("
                << "__offset_" << repl.scopeUniqueVarName
                << ", __sizeof_" << repl.scopeUniqueVarName
                << ", " << std::boolalpha << repl.threadLocal
                << ", \"" << D->getNameAsString() << "\""
-               << ", std::move(ssthg_init_" << repl.scopeUniqueVarName << "));";
+               << ", std::move(sst_hg_init_" << repl.scopeUniqueVarName << "));";
   }
   registerGlobalReplacement(D, &repl);
   delayedInsertAfter(D, newVarSstr.str());
@@ -465,7 +465,7 @@ SkeletonASTVisitor::setupFunctionStaticCpp(VarDecl* D, const std::string& scopeP
   GlobalVariableReplacement var = setupGlobalReplacement(D, scopePrefix, false, true, false);
   std::string replText = "int __sizeof_" + var.scopeUniqueVarName + " = sizeof(void*); "
       " extern int __offset_" + var.scopeUniqueVarName + "; "
-      " extern \"C\" void ssthg_init_" + var.scopeUniqueVarName + "(void* ptr){ "
+      " extern \"C\" void sst_hg_init_" + var.scopeUniqueVarName + "(void* ptr){ "
       "   void** ptrptr = (void**) ptr; "
       "   *ptrptr = nullptr; "
       "}";
@@ -476,13 +476,13 @@ SkeletonASTVisitor::setupFunctionStaticCpp(VarDecl* D, const std::string& scopeP
   if (var.arrayInfo){
     //create a temp that is the original object initialzed
     //the *x = expr syntax is not valid for certain initializations
-    initializer = "ssthg_" + var.scopeUniqueVarName + "= ("
+    initializer = "sst_hg_" + var.scopeUniqueVarName + "= ("
         + var.arrayInfo->typedefName + "*) new char[sizeof(" + var.typeStr + ")];";
     if (D->hasInit()){
       initializer += var.arrayInfo->typedefName + " initer_" + var.scopeUniqueVarName
                     + "=" + printWithGlobalsReplaced(D->getInit()) + ";";
       //then memcopy from it into the original
-      initializer += " memcpy(ssthg_" + var.scopeUniqueVarName + ", initer_" + var.scopeUniqueVarName
+      initializer += " memcpy(sst_hg_" + var.scopeUniqueVarName + ", initer_" + var.scopeUniqueVarName
                   + ", sizeof(" + var.arrayInfo->typedefName + "));";
     }
   } else {
@@ -500,19 +500,19 @@ SkeletonASTVisitor::setupFunctionStaticCpp(VarDecl* D, const std::string& scopeP
     } else {
       ctor = "{}";
     }
-    initializer = "ssthg_" + var.scopeUniqueVarName + "= new " + var.typeStr + ctor + ";";
+    initializer = "sst_hg_" + var.scopeUniqueVarName + "= new " + var.typeStr + ctor + ";";
   }
 
 
 
   std::string initText =
-   "void** ptrssthg_" + var.scopeUniqueVarName
-    + " = ((void**)(ssthg_global_data + __offset_" + var.scopeUniqueVarName + "));"
-    + var.typeStr + "* ssthg_" + var.scopeUniqueVarName + " = (" + var.typeStr
-    + "*)(*ptrssthg_" + var.scopeUniqueVarName + "); "
-   "if (ssthg_" + var.scopeUniqueVarName + " == nullptr){ "
+   "void** ptr_sst_hg_" + var.scopeUniqueVarName
+    + " = ((void**)(sst_hg_global_data + __offset_" + var.scopeUniqueVarName + "));"
+    + var.typeStr + "* sst_hg_" + var.scopeUniqueVarName + " = (" + var.typeStr
+    + "*)(*ptr_sst_hg_" + var.scopeUniqueVarName + "); "
+   "if (sst_hg_" + var.scopeUniqueVarName + " == nullptr){ "
     + initializer +
-   "  *ptrssthg_" + var.scopeUniqueVarName + " = ssthg_" + var.scopeUniqueVarName + "; "
+   "  *ptr_sst_hg_" + var.scopeUniqueVarName + " = sst_hg_" + var.scopeUniqueVarName + "; "
    "}";
   delayedInsertAfter(D, initText);
   registerGlobalReplacement(D, &var);
@@ -530,30 +530,30 @@ SkeletonASTVisitor::setupFunctionStaticC(VarDecl* D, const std::string& scopePre
   GlobalVariableReplacement var = setupGlobalReplacement(D, scopePrefix, false, true, false);
   std::string replText = "int __sizeof_" + var.scopeUniqueVarName + " = sizeof(void*); "
       " extern int __offset_" + var.scopeUniqueVarName + "; "
-      " void ssthg_init_" + var.scopeUniqueVarName + "(void* ptr){ "
+      " void sst_hg_init_" + var.scopeUniqueVarName + "(void* ptr){ "
       "   void** ptrptr = (void**) ptr; "
       "   *ptrptr = 0; "
       "}";
   CompilerGlobals::rewriter.InsertText(fxnStart, replText, false);
 
   std::string initText =
-   "void** ptrssthg_" + var.scopeUniqueVarName
-    + " = ((void**)(ssthg_global_data + __offset_" + var.scopeUniqueVarName + "));"
-    + var.typeStr + "* ssthg_" + var.scopeUniqueVarName + " = (" + var.typeStr
-    + "*)(*ptrssthg_" + var.scopeUniqueVarName + "); "
-   "if (ssthg_" + var.scopeUniqueVarName + " == 0){ "
-   "  ssthg_" + var.scopeUniqueVarName + " = (" + var.typeStr + "*) malloc(sizeof(" + var.typeStr + ")); "
-   "  *ptrssthg_" + var.scopeUniqueVarName + " = sstgh_" + var.scopeUniqueVarName + "; }";
+   "void** ptr_sst_hg_" + var.scopeUniqueVarName
+    + " = ((void**)(sst_hg_global_data + __offset_" + var.scopeUniqueVarName + "));"
+    + var.typeStr + "* sst_hg_" + var.scopeUniqueVarName + " = (" + var.typeStr
+    + "*)(*ptr_sst_hg_" + var.scopeUniqueVarName + "); "
+   "if (sst_hg_" + var.scopeUniqueVarName + " == 0){ "
+   "  sst_hg_" + var.scopeUniqueVarName + " = (" + var.typeStr + "*) malloc(sizeof(" + var.typeStr + ")); "
+   "  *ptr_sst_hg_" + var.scopeUniqueVarName + " = sstgh_" + var.scopeUniqueVarName + "; }";
   if (var.arrayInfo && D->hasInit()){
     //create a temp that is the original object initialzed
     //the *x = expr syntax is not valid for certain initializations
     initText += var.arrayInfo->typedefName + " initer_" + var.scopeUniqueVarName
                   + "=" + printWithGlobalsReplaced(D->getInit()) + ";";
     //then memcopy from it into the original
-    initText += " memcpy(*ptrssthg_" + var.scopeUniqueVarName + ", initer_" + var.scopeUniqueVarName
+    initText += " memcpy(*ptr_sst_hg_" + var.scopeUniqueVarName + ", initer_" + var.scopeUniqueVarName
                 + ", sizeof(" + var.arrayInfo->typedefName + "));";
   } else if (D->hasInit()){
-    initText += "*ssthg_" + var.scopeUniqueVarName + " = ("
+    initText += "*sst_hg_" + var.scopeUniqueVarName + " = ("
         + var.typeStr + ") " + printWithGlobalsReplaced(D->getInit()) + ";";
   }
 
@@ -682,7 +682,7 @@ SkeletonASTVisitor::checkInstanceStaticClassVar(VarDecl *D)
   GlobalVariableReplacement repl = setupGlobalReplacement(D, "", false, false, true);
   os << "int " << clsName
      << "::__offset_" << D->getNameAsString()
-     << " = ssthg::inplaceCppGlobal<"
+     << " = SST::Hg::inplaceCppGlobal<"
      << tagName
      << "," << repl.typeStr
      << "," << std::boolalpha << isThreadLocal(D)

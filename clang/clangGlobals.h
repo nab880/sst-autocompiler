@@ -85,8 +85,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Questions? Contact sst-macro-help@sandia.gov
 */
 
-#ifndef ssthg_clang_globals_h
-#define ssthg_clang_globals_h
+#pragma once
 
 #include <map>
 #include <list>
@@ -250,5 +249,3 @@ struct CompilerGlobals {
 
   static void setup(clang::CompilerInstance* ci);
 };
-
-#endif

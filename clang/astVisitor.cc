@@ -250,15 +250,15 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
 void
 SkeletonASTVisitor::initMPICalls()
 {
-  mpiCalls_["ssthg_irecv"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["ssthg_isend"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["ssthg_recv"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["ssthg_send"] = &SkeletonASTVisitor::visitPt2Pt;
-  mpiCalls_["ssthg_bcast"] = &SkeletonASTVisitor::visitPt2Pt; //bit of a hack
-  mpiCalls_["ssthg_allreduce"] = &SkeletonASTVisitor::visitReduce;
-  mpiCalls_["ssthg_reduce"] = &SkeletonASTVisitor::visitReduce;
-  mpiCalls_["ssthg_allgather"] = &SkeletonASTVisitor::visitCollective;
-  mpiCalls_["ssthg_alltoall"] = &SkeletonASTVisitor::visitCollective;
+  mpiCalls_["sst_hg_irecv"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["sst_hg_isend"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["sst_hg_recv"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["sst_hg_send"] = &SkeletonASTVisitor::visitPt2Pt;
+  mpiCalls_["sst_hg_bcast"] = &SkeletonASTVisitor::visitPt2Pt; //bit of a hack
+  mpiCalls_["sst_hg_allreduce"] = &SkeletonASTVisitor::visitReduce;
+  mpiCalls_["sst_hg_reduce"] = &SkeletonASTVisitor::visitReduce;
+  mpiCalls_["sst_hg_allgather"] = &SkeletonASTVisitor::visitCollective;
+  mpiCalls_["sst_hg_alltoall"] = &SkeletonASTVisitor::visitCollective;
 
   mpiCalls_["irecv"] = &SkeletonASTVisitor::visitPt2Pt;
   mpiCalls_["isend"] = &SkeletonASTVisitor::visitPt2Pt;
@@ -315,7 +315,7 @@ SkeletonASTVisitor::initReservedNames()
   globalVarWhitelist_.insert("getdate_err");
   globalVarWhitelist_.insert("optopt");
   globalVarWhitelist_.insert("__mb_cur_max");
-  globalVarWhitelist_.insert("ssthg_global_stacksize");
+  globalVarWhitelist_.insert("sst_hg_global_stacksize");
   globalVarWhitelist_.insert("__stderrp");
   globalVarWhitelist_.insert("__stdinp");
 
@@ -1049,7 +1049,7 @@ SkeletonASTVisitor::TraverseCallExpr(CallExpr* expr, DataRecursionQueue*  /*queu
         DeclRefExpr* dref = cast<DeclRefExpr>(fxn);
         std::string fxnName = dref->getFoundDecl()->getNameAsString();
         if (ssthgFxnPrepends_.find(fxnName) != ssthgFxnPrepends_.end()){
-          insertBefore(expr->getCallee(), "ssthg_");
+          insertBefore(expr->getCallee(), "sst_hg_");
         }
 
         auto iter = mpiCalls_.find(fxnName);
@@ -1151,7 +1151,7 @@ SkeletonASTVisitor::checkArray(VarDecl* D)
     info->fqTypedefName = currentNs_->nsPrefix() + info->typedefName;
     //something of the form type x[N][M];
     //we possible need to first: typedef type tx[N][M];
-    //replacement global will be tx* xRepl = &(ssthg_global_data + offset)
+    //replacement global will be tx* xRepl = &(sst_hg_global_data + offset)
     const ArrayType* aty = ty->getAsArrayTypeUnsafe();
     std::stringstream sstr;
     cArrayConfig cfg;
@@ -1180,7 +1180,7 @@ SkeletonASTVisitor::checkArray(VarDecl* D)
     if (ety->isConstantArrayType()){
       //something of the form type x[][M]
       //we need to first: typedef type tx[][M];
-      //replacement global will be tx* xRepl = &(ssthg_global_data + offset)
+      //replacement global will be tx* xRepl = &(sst_hg_global_data + offset)
       info->typedefName = "type_" + D->getNameAsString();
       info->fqTypedefName = currentNs_->nsPrefix() + info->typedefName;
       std::stringstream sstr;
@@ -1731,7 +1731,7 @@ SkeletonASTVisitor::TraverseVarDecl(VarDecl* D)
       }
 
       std::stringstream sstTypeOs;
-      sstTypeOs << " ssthg::CppVarTemplate<" << clsName
+      sstTypeOs << " SST::Hg::CppVarTemplate<" << clsName
            << "," << GetAsString(D->getType())
            << "," << std::boolalpha << isThreadLocal(D)
            << "> ";
@@ -1777,7 +1777,7 @@ SkeletonASTVisitor::TraverseVarDecl(VarDecl* D)
       if (D->isStaticLocal()){
         sstr << " static";
       }
-      sstr << " ssthg::CppVarTemplate<ssthgTagClass" << D->getNameAsString()
+      sstr << " SST::Hg::CppVarTemplate<ssthgTagClass" << D->getNameAsString()
            << "," << GetAsString(D->getType())
            << "," << std::boolalpha << isThreadLocal(D)
            << "> " << D->getNameAsString();
@@ -1888,7 +1888,7 @@ SkeletonASTVisitor::replaceMain(clang::FunctionDecl* mainFxn)
 
   std::stringstream sstr;
   if (!isC) sstr << "extern \"C\" ";
-  sstr << "int ssthg_user_main_" << mainName_ << "(";
+  sstr << "int sst_hg_user_main_" << mainName_ << "(";
   if (mainFxn->getNumParams() == 2){
     sstr << "int " << mainFxn->getParamDecl(0)->getNameAsString()
          << ", char** " << mainFxn->getParamDecl(1)->getNameAsString();
@@ -1915,11 +1915,11 @@ SkeletonASTVisitor::addInContextGlobalDeclarations(clang::Stmt* body)
     std::stringstream sstr;
     sstr << "{ ";
     if (needGlobalData){
-      sstr << "char* ssthg_global_data = get_ssthg_global_data();";
-      //sstr << "printf(\"Globals=%p\\n\", ssthg_global_data);";
+      sstr << "char* sst_hg_global_data = get_sst_hg_global_data();";
+      //sstr << "printf(\"Globals=%p\\n\", sst_hg_global_data);";
     }
     if (needTlsData){
-      sstr << "char* ssthg_tls_data = get_ssthg_tls_data();";
+      sstr << "char* sst_hg_tls_data = get_sst_hg_tls_data();";
     }
     for (auto d : currentGlobals){
       GlobalStandin& gs = globalStandins_[d];

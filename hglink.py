@@ -59,8 +59,3 @@ def addLink(ctx, ldTarget, args, cmds, objects, toExe=False):
   linkCmdArr.append("-o")
   linkCmdArr.append(ldTarget)
   cmds.append([None,linkCmdArr,[]])
-
-def addModeLinks(ctx, args):
-  if not ctx.sstCore:
-    ctx.libs.append('-lsstmac')
-  ctx.libs.append('-lundumpi')

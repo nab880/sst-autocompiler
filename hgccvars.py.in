@@ -43,7 +43,8 @@ Questions? Contact sst-macro-help@sandia.gov
 """
 sstLdFlags = [
 '@LDFLAGS@',
-'-L@SST_MACRO@/lib',
+'-lhg',
+'-L@SST_ELEMENTS@/lib/sst-elements-library',
 ]
 
 haveFloat128=@have_float_128@
