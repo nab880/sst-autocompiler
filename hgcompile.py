@@ -104,7 +104,8 @@ def addLlvmCompile(ctx, llFile, objFile, args, cmds):
 
 def addModeDefines(ctx, args):
   if ctx.mode != ctx.COMPONENT:
-    ctx.defines.append("SST_HG_EXTERNAL")
+    # this breaks current Mercury way of doing things
+    #ctx.defines.append("SST_HG_EXTERNAL")
     if ctx.sstCore:
       ctx.defines.append("SST_HG_EXTERNAL_SKELETON")
 
