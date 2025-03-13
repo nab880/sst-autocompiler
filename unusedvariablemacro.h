@@ -42,13 +42,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Questions? Contact sst-macro-help@sandia.gov
 */
 
-#ifndef include_unusedvariablemacro_h
-#define include_unusedvariablemacro_h
+#pragma once
 
 #if __cplusplus >= 201703L
-  #define SSTMAC_MAYBE_UNUSED [[maybe_unused]]
+  #define SST_HG_MAYBE_UNUSED [[maybe_unused]]
 #else
-  #define SSTMAC_MAYBE_UNUSED __attribute__((unused))
+  #define SST_HG_MAYBE_UNUSED __attribute__((unused))
 #endif
-
-#endif // include_unusedvariablemacro_h

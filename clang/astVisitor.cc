@@ -126,7 +126,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
 {
   ci = CI;
   int skeletonize = 0;
-  const char* skelStr = getenv("SSTMAC_SKELETONIZE");
+  const char* skelStr = getenv("SST_HG_SKELETONIZE");
   if (skelStr){
     int runSkeletonize = atoi(skelStr);
     if (runSkeletonize){
@@ -139,7 +139,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
   }
 
   int puppetize = 0;
-  const char* puppetStr = getenv("SSTMAC_PUPPETIZE");
+  const char* puppetStr = getenv("SST_HG_PUPPETIZE");
   if (puppetStr){
     int runPuppetize = atoi(puppetStr);
     if (runPuppetize){
@@ -152,7 +152,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
   }
 
   int shadowize = 0;
-  const char* shadowStr = getenv("SSTMAC_SHADOWIZE");
+  const char* shadowStr = getenv("SST_HG_SHADOWIZE");
   if (shadowStr){
     int runShadowize = atoi(shadowStr);
     if (runShadowize){
@@ -165,7 +165,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
   }
 
   int memoize = 0;
-  const char* memoStr = getenv("SSTMAC_MEMOIZE");
+  const char* memoStr = getenv("SST_HG_MEMOIZE");
   if (memoStr){
     int runMemoize = atoi(memoStr);
     if (runMemoize){
@@ -178,7 +178,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
   }
 
   int encapsulate = 0;
-  const char* encapsulaeStr = getenv("SSTMAC_ENCAPSULATE");
+  const char* encapsulaeStr = getenv("SST_HG_ENCAPSULATE");
   if (encapsulaeStr){
     int runEncapsulate = atoi(encapsulaeStr);
     if (runEncapsulate){
@@ -229,7 +229,7 @@ CompilerGlobals::setup(clang::CompilerInstance* CI)
     }
   }
 
-  const char* mainStr = getenv("SSTMAC_REFACTOR_MAIN");
+  const char* mainStr = getenv("SST_HG_REFACTOR_MAIN");
   if (mainStr){
     refactorMain = atoi(mainStr);
   }
@@ -340,11 +340,11 @@ SkeletonASTVisitor::registerNewKeywords(std::ostream& os)
 void
 SkeletonASTVisitor::initHeaders()
 {
-  const char* headerListFile = getenv("SSTMAC_HEADERS");
+  const char* headerListFile = getenv("SST_HG_HEADERS");
   if (headerListFile){
     std::ifstream ifs(headerListFile);
     if (!ifs.good()){
-      std::cerr << "Bad header list from environment SSTMAC_HEADERS=" << headerListFile << std::endl;
+      std::cerr << "Bad header list from environment SST_HG_HEADERS=" << headerListFile << std::endl;
       exit(EXIT_FAILURE);
     }
 

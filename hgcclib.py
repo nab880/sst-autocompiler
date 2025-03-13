@@ -43,10 +43,10 @@ Questions? Contact sst-macro-help@sandia.gov
 """
 
 helpText = """The following environmental variables can be defined for the SST compiler
-SSTMAC_VERBOSE=0 or 1:        produce verbose output from the SST compiler (default 0)
-SSTMAC_DELETE_TEMPS=0 or 1:   remove all temp source-to-source files (default 1)
-SSTMAC_DELETE_TEMP_OFILES=0 or 1:   remove all temporary object files (default 1)
-SSTMAC_CONFIG=0: running automake, cmake - skip certain steps to fool build system
+SST_HG_VERBOSE=0 or 1:        produce verbose output from the SST compiler (default 0)
+SST_HG_DELETE_TEMPS=0 or 1:   remove all temp source-to-source files (default 1)
+SST_HG_DELETE_TEMP_OFILES=0 or 1:   remove all temporary object files (default 1)
+SST_HG_CONFIG=0: running automake, cmake - skip certain steps to fool build system
 """
 
 def createBashWrapper(compiler, exeName, ldTarget, sstCore, sstmacExe):
@@ -249,15 +249,15 @@ def run(typ, extraLibs=""):
   sstmacExe = cleanFlag(os.path.join(prefix, "bin", "sstmac"))
 
   verbose = False     #whether to print verbose output
-  if "SSTMAC_VERBOSE" in os.environ:
-    flag = int(os.environ["SSTMAC_VERBOSE"])
+  if "SST_HG_VERBOSE" in os.environ:
+    flag = int(os.environ["SST_HG_VERBOSE"])
     verbose = verbose or flag
 
   #whether to make a shared object for loading
   #or a bash script that emulates an executable
   makeBashExe = False
-  if "SSTMAC_CONFIG" in os.environ:
-    flag = int(os.environ["SSTMAC_CONFIG"])
+  if "SST_HG_CONFIG" in os.environ:
+    flag = int(os.environ["SST_HG_CONFIG"])
     makeBashExe = flag
 
   procTree = getProcTree()[1:] #throw out python command
@@ -327,13 +327,13 @@ def run(typ, extraLibs=""):
   #it is possible to override the host compilers use to do preprocessing/compilation
   if args.host_cxx:
     ctx.cxx = args.host_cxx
-  elif "SSTMAC_CXX" in os.environ:
-    ctx.cxx = os.environ["SSTMAC_CXX"]
+  elif "SST_HG_CXX" in os.environ:
+    ctx.cxx = os.environ["SST_HG_CXX"]
 
   if args.host_cc:
     ctx.cc = args.host_cc
-  elif "SSTMAC_CC" in os.environ:
-    ctx.cc = os.environ["SSTMAC_CC"]
+  elif "SST_HG_CC" in os.environ:
+    ctx.cc = os.environ["SST_HG_CC"]
 
   if args.no_integrated_cpp:
     sys.exit("SST compiler wrapper cannot handle --no-integrated-cpp flag")
@@ -345,39 +345,39 @@ def run(typ, extraLibs=""):
   delTempObjectFiles = True #whether to delete all temporary object files created
   delTempSourceFiles = True #whether to delete all temporary source files created
 
-  if "SSTMAC_DELETE_TEMPS" in os.environ:
-    flag = int(os.environ["SSTMAC_DELETE_TEMPS"])
+  if "SST_HG_DELETE_TEMPS" in os.environ:
+    flag = int(os.environ["SST_HG_DELETE_TEMPS"])
     delTempSourceFiles = bool(flag)
     delTempObjectFiles = bool(flag)
 
-  if "SSTMAC_DELETE_TEMP_OBJECTS" in os.environ:
-    flag = int(os.environ["SSTMAC_DELETE_TEMP_OBJECTS"])
+  if "SST_HG_DELETE_TEMP_OBJECTS" in os.environ:
+    flag = int(os.environ["SST_HG_DELETE_TEMP_OBJECTS"])
     delTempObjectFiles = bool(flag)
   elif args.g: #debug build, don't delete temps
     delTempObjectFiles = False
 
-  if "SSTMAC_DELETE_TEMP_SOURCES" in os.environ:
-    flag = int(os.environ["SSTMAC_DELETE_TEMP_SOURCES"])
+  if "SST_HG_DELETE_TEMP_SOURCES" in os.environ:
+    flag = int(os.environ["SST_HG_DELETE_TEMP_SOURCES"])
     delTempSourceFiles = bool(flag)
 
   skeletonizing = False
-  if "SSTMAC_SKELETONIZE" in os.environ:
-    val = int(os.environ["SSTMAC_SKELETONIZE"])
+  if "SST_HG_SKELETONIZE" in os.environ:
+    val = int(os.environ["SST_HG_SKELETONIZE"])
     skeletonizing = bool(val)
   if skeletonizing or (not args.skeletonize is None):
     ctx.clangArgs.append("--skeletonize")
     ctx.setMode(ctx.SKELETONIZE)
 
   memoizing = False
-  if "SSTMAC_MEMOIZE" in os.environ:
-    val = int(os.environ["SSTMAC_MEMOIZE"])
+  if "SST_HG_MEMOIZE" in os.environ:
+    val = int(os.environ["SST_HG_MEMOIZE"])
     memoizing = bool(val)
   if memoizing or (not args.memoize is None):
     ctx.clangArgs.append("--memoize")
     ctx.setMode(ctx.MEMOIZE)
 
-  if "SSTMAC_DEBUG_SRC2SRC" in os.environ:
-    ctx.src2srcDebug = int(os.environ["SSTMAC_DEBUG_SRC2SRC"])
+  if "SST_HG_DEBUG_SRC2SRC" in os.environ:
+    ctx.src2srcDebug = int(os.environ["SST_HG_DEBUG_SRC2SRC"])
 
   if args.sst_component:
     ctx.setMode(ctx.COMPONENT)

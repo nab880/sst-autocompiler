@@ -104,15 +104,15 @@ def addLlvmCompile(ctx, llFile, objFile, args, cmds):
 
 def addModeDefines(ctx, args):
   if ctx.mode != ctx.COMPONENT:
-    ctx.defines.append("SSTMAC_EXTERNAL")
+    ctx.defines.append("SST_HG_EXTERNAL")
     if ctx.sstCore:
-      ctx.defines.append("SSTMAC_EXTERNAL_SKELETON")
+      ctx.defines.append("SST_HG_EXTERNAL_SKELETON")
 
   if ctx.srcToSrc() or ctx.mode == ctx.COMPONENT:
-    ctx.defines.append("SSTMAC_NO_REFACTOR_MAIN")
+    ctx.defines.append("SST_HG_NO_REFACTOR_MAIN")
 
   if not ctx.simulateMode():
-    ctx.defines.append("SSTMAC_NO_REPLACEMENTS")
+    ctx.defines.append("SST_HG_NO_REPLACEMENTS")
 
 def addSrc2SrcCompile(ctx, sourceFile, outputFile, args, cmds):
   from hgccvars import prefix

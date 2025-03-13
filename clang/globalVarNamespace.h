@@ -57,7 +57,7 @@ Questions? Contact sst-macro-help@sandia.gov
 struct GlobalVarNamespace
 {
   GlobalVarNamespace() : testPrefix(nullptr) {
-    testPrefix = getenv("SSTMAC_CLANG_TEST_PREFIX");
+    testPrefix = getenv("SST_HG_CLANG_TEST_PREFIX");
   }
 
   struct Variable {
