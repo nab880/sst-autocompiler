@@ -9,7 +9,7 @@ AC_ARG_WITH([sst-elements],
       SST_ELEMENTS="$withval"
       have_elements="yes"
     ], [
-      have_elements="no"
+       AC_MSG_ERROR([sst-elements is required])
     ]
 )
 
