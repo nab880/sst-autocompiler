@@ -1,8 +1,8 @@
-#include <sstmac_mpi.h>
-#include <iostream>
-
-#define sstmac_app_name test_tls
+#define ssthg_app_name test_tls
 #include <skeleton.h>
+
+#include <mask_mpi.h>
+#include <iostream>
 
 int my_global=0;
 
